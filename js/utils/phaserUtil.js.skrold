@@ -1,0 +1,75 @@
+import { loadImageElement, createWhiteBackgroundBase64 } from './image.js';
+
+/**
+ * スプライトにホバーエフェクトとクリックを設定
+ * @param {Phaser.Scene} scene
+ * @param {Phaser.GameObjects.Sprite|Phaser.GameObjects.Image} sprite
+ * @param {() => void} callback
+ */
+export function addSpriteHoverEffect(scene, sprite, callback) {
+  sprite.setInteractive({ useHandCursor: true });
+  sprite.on('pointerover', () => {
+    scene.input.setDefaultCursor('pointer');
+    sprite.setTint(0x88ccff);
+  });
+  sprite.on('pointerout', () => {
+    scene.input.setDefaultCursor('auto');
+    sprite.clearTint();
+  });
+  sprite.on('pointerdown', callback);
+}
+
+/**
+ * DataUrl(PNG) → Phaser テクスチャ登録
+ * @param {Phaser.Scene} scene
+ * @param {string} key
+ * @param {string} dataUrl — data:image/png;base64,... の形式
+ * @param {boolean} [addWhiteBg=false]
+ */
+export async function convertDataUrlToSprite(scene, key, dataUrl, addWhiteBg = false) {
+  // あらかじめ同期的に取り込んであるので即利用できる
+  const orig = await loadImageElement(dataUrl);
+  const finalDataUrl = addWhiteBg
+    ? createWhiteBackgroundDataUrl(orig)
+    : dataUrl;
+
+  const img = await loadImageElement(finalDataUrl);
+
+  if (scene.textures.exists(key)) {
+    scene.textures.removeKey(key);
+  }
+  scene.textures.addImage(key, img);
+  return key;
+}
+
+/**
+ * DataUrl 文字列から Phaser テクスチャを作成して Sprite に適用します。
+ * @param {Phaser.Scene} scene - テクスチャを登録するシーン
+ * @param {Phaser.GameObjects.Sprite} sprite - テクスチャをセットするスプライト
+ * @param {string} key - テクスチャキー（ユニークな文字列）
+ * @param {string} dataUrl - dataUrl
+ */
+export function setTexture(scene, sprite, key, dataUrl) {
+
+  // 既存の同名テクスチャがあれば削除
+  if (scene.textures.exists(key)) {
+    scene.textures.remove(key);
+  }
+
+  // DataUrl からテクスチャを登録
+  scene.textures.addDataUrl(key, dataUrl);
+
+  // スプライトに適用
+  sprite.setTexture(key);
+}
+
+/**
+ * 不要 canvas を削除
+ */
+export function removeExtraCanvas(containerId = 'game-container') {
+  const ctr = document.getElementById(containerId);
+  const canvases = ctr?.getElementsByTagName('canvas');
+  if (canvases && canvases.length > 1) {
+    for (let i = 1; i < canvases.length; i++) ctr.removeChild(canvases[i]);
+  }
+}

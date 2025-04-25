@@ -1,0 +1,38 @@
+/* style.css */
+
+/* -----------------------------------
+   全体設定
+----------------------------------- */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000; /* ページ全体の背景色を黒に */
+  color: #fff;            /* テキスト色を白に */
+  font-family: sans-serif;
+
+  /* コンテンツを中央に配置 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* -----------------------------------
+   Phaser ゲーム領域
+----------------------------------- */
+#game-container {
+  width: 1344px;           /* ゲームキャンバスの幅 */
+  height: 768px;           /* ゲームキャンバスの高さ */
+  background-color: #222;  /* 背景色 */
+  position: absolute;
+  top: 50%;                /* 垂直中央 */
+  left: 50%;               /* 水平中央 */
+  transform: translate(-50%, -50%); /* 真ん中に寄せる */
+  margin: 0 auto;          /* 横方向の余白リセット */
+}
+
+/* -----------------------------------
+   Canvas 要素
+----------------------------------- */
+canvas {
+  display: block; /* デフォルトの余白を消す */
+}

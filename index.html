@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Monster Summon & Battle Game</title>
+  <!-- Phaser.js -->
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
+  <!-- ES Module Shims -->
+  <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+  <!-- QRコード -->
+	<script src="https://cdn.jsdelivr.net/npm/qr-code-styling/lib/qr-code-styling.js"></script>
+  <!-- importmap -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/",
+      "@pixiv/three-vrm": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3.3.6/lib/three-vrm.module.min.js"
+    }
+  }
+  </script>
+  <!-- メインモジュール -->
+  <script type="module" src="./js/index.js"></script>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <!-- Phaser 描画領域 -->
+  <div id="game-container"></div>
+
+  <!-- Three.js VRM 描画領域 -->
+  <div id="three-container" style="
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+  "></div>
+
+  <!-- Canvas for offscreen processing -->
+  <canvas id="monCanvas" width="1024" height="1024" style="display:none;"></canvas>
+  <canvas id="cardCanvas" width="720" height="1000" style="display:none;"></canvas>
+  <canvas id="aiCanvas" style="display:none;"></canvas>
+  <canvas id="printCanvas" width="1500" height="1050" style="display:none;"></canvas>
+
+  <!-- ファイルアップロード用 -->
+  <input type="file" id="file_upload" style="display:none" />
+  <input type="file" id="uploadMonsterFiles" style="display:none" multiple accept="image/*" />
+
+</body>
+</html>
